@@ -1,0 +1,19 @@
+from flask import Flask  # import Flask class
+
+app = Flask(__name__)    # create Flask app object
+
+@app.route("/add/<int:a>/<int:b>")
+def add(a, b):
+    return f" SUM OF TWO NUMBERS <br> first num : {a} <br>  second num: {b} <br>  Sum of {a} and {b} is {a + b}"
+# <br> is used to get a new line
+#<\n> doesnot work for browser
+
+@app.route("/")  #is used to connect a URL to a function.
+def home():
+    return "  hi! thrishala  <br> this is home page "
+
+
+if __name__ == "__main__":  #It tells Python: “Run this code only when this file is executed directly, 
+                             #not when it is imported.” and Prevents server from auto-running when imported
+    app.run(debug=True)     # true ->develoment mode ->shows errors
+                            # false ->production mode ->hides errors
