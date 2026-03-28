@@ -1,0 +1,63 @@
+import nltk
+import string  #It contains all punctuation symbols: instead of manually typing symbols.
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag, ne_chunk
+
+# -------- DOWNLOAD ONLY REQUIRED RESOURCES --------
+nltk.download('punkt')
+nltk.download('punkt_tab')      #REQUIRED for Python 3.12
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+
+print("PROGRAM STARTED\n")
+
+# -------- SAMPLE TEXT --------
+text = "Hi my name is Thrishala and I'm currently pursuing my 2nd B-Tech in SVECW."
+
+# -------- TEXT PREPROCESSING --------
+
+# 1. Tokenization
+tokens = word_tokenize(text)
+
+# 2. Lowercasing
+tokens = [word.lower() for word in tokens]
+
+# 3. Remove punctuation
+tokens = [word for word in tokens if word not in string.punctuation]
+
+# 4. Remove stopwords i and my are considered as stop words so not appear in output
+stop_words = set(stopwords.words('english'))
+
+with_stopwords = tokens
+only_stopwords = [w for w in tokens if w in stop_words]
+without_stopwords = [w for w in tokens if w not in stop_words]
+
+# 5. Stemming
+stemmer = PorterStemmer()
+stemmed_words = [stemmer.stem(word) for word in tokens]
+
+# 6. Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_words = [lemmatizer.lemmatize(word) for word in tokens]
+
+#lemmatizer.lemmatize("pursuing", pos="v") o/p =>pursue
+
+print("Tokens:", tokens)
+print("Only stopwords:", only_stopwords)
+print("Without stopwords:", without_stopwords)
+print("Stemmed:", stemmed_words)
+print("Lemmatized:", lemmatized_words)
+
+# -------- NER (NAMED ENTITY RECOGNITION) --------
+
+pos_tags = pos_tag(word_tokenize(text))
+named_entities = ne_chunk(pos_tags)
+
+print("\nNamed Entities:")
+print(named_entities)
+print("\nPROGRAM ENDED")
