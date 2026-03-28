@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+
+# Load dataset
+df = pd.read_csv("diabetes.csv")
+
+# Separate features and label
+X = df.drop("Outcome", axis=1)
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=2, random_state=0)
+kmeans.fit(X)
+
+# Add cluster info
+df["Cluster"] = kmeans.labels_
+
+# Compare cluster with actual outcome
+print("\nCluster vs Outcome:")
+print(pd.crosstab(df["Cluster"], df["Outcome"]))
+
+# New patient data
+new_patient = pd.DataFrame(
+    [[2, 130, 70, 25, 100, 32, 0.5, 40]],
+    columns=X.columns
+)
+
+cluster = kmeans.predict(new_patient)
+print("\nNew patient belongs to Cluster:", cluster)
