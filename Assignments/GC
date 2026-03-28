@@ -1,0 +1,26 @@
+#import gc
+import gc 
+#Check if GC is enabled
+print(gc.isenabled())
+
+#reference counting no need of gc
+a = [1, 2, 3]
+b = [4, 5, 6]
+a = None
+b = None  #lists are now unused
+collected = gc.collect()
+print("Objects collected:", collected)#will be zero because Python already cleaned them
+print(a,b) 
+
+#Garbage Collector (gc)   Only needed for circular references
+class A:
+    pass
+class B:
+    pass
+a = A()
+b = B()
+a.ref = b
+b.ref = a   # circular reference
+del a
+del b
+print("Objects collected:", gc.collect())
