@@ -1,0 +1,22 @@
+print("from start=0")
+names=['pardhu','ankit','hemanjali']
+for indx,name in enumerate(names,start=0):
+    print(f"{indx} . {name}")
+
+print(" from start=1")
+
+for indx,name in enumerate(names,start=1):
+    print(f"{indx} . {name}")
+
+#default start=0
+string="python"
+for ind,ch in enumerate(string):
+    print(f"{ind} . {ch}")
+
+#list of enumeratenames=['pardhu','ankit','hemanjali']
+names=['pardhu','ankit','hemanjali']
+new_names=list(enumerate(names))
+print(new_names)
+
+#directly print without using variable
+print(list(enumerate((10, 20, 30))))
