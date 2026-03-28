@@ -1,0 +1,88 @@
+# ==============================
+# KNN REGRESSION - FULL CODE
+# ==============================
+
+import pandas as pd
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+
+# ------------------------------
+# 1. Load the dataset
+# ------------------------------
+df = pd.read_csv("diabetes.csv")
+print("Dataset Loaded Successfully\n")
+
+
+# ------------------------------
+# 2. Separate features and target
+#    Target = Glucose (numeric)
+# ------------------------------
+X = df.drop("Glucose", axis=1)
+y = df["Glucose"]
+
+
+# ------------------------------
+# 3. Train-Test Split
+# ------------------------------
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=0
+)
+
+
+# ------------------------------
+# 4. Feature Scaling (VERY IMPORTANT for KNN)
+# ------------------------------
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+
+# ------------------------------
+# 5. Apply KNN Regressor
+# ------------------------------
+knn_reg = KNeighborsRegressor(n_neighbors=5)
+knn_reg.fit(X_train, y_train)
+
+
+# ------------------------------
+# 6. Predict on test data
+# ------------------------------
+y_pred = knn_reg.predict(X_test)
+
+print("First 5 predicted values:", y_pred[:5])
+print("First 5 actual values   :", y_test.values[:5])
+print()
+
+
+# ------------------------------
+# 7. Model Evaluation
+# ------------------------------
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Mean Squared Error (MSE):", mse)
+print("R2 Score:", r2)
+print()
+
+
+# ------------------------------
+# 8. Predict for a NEW data point
+# ------------------------------
+# Order must match X.columns exactly
+
+new_patient = pd.DataFrame(
+    [[6, 72, 35, 0, 33.6, 0.627, 50, 1]],
+    columns=X.columns
+)
+
+new_patient_scaled = scaler.transform(new_patient)
+
+predicted_glucose = knn_reg.predict(new_patient_scaled)
+
+print("Predicted Glucose level for new patient:", predicted_glucose)
